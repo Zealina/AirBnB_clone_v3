@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Main Flask Endpoint"""
 
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -15,6 +15,12 @@ app.register_blueprint(app_views)
 def teardown_appcontext(exception=None):
     """Handle teardown appcontext"""
     storage.close()
+
+
+@app.errorhandler(404)
+def error_not_found(error):
+    """Error not found"""
+    return jsonify({'error': 'Not found'})
 
 
 if __name__ == '__main__':
